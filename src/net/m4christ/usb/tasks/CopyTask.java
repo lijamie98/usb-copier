@@ -63,12 +63,20 @@ public class CopyTask extends VerifyTask {
 		}
 	}
 
+	/**
+	 * Copy from src to dest. If folder, calls recursively. Otherwise, always override.
+	 *
+	 * @param src
+	 * @param dest
+	 * @throws IOException
+	 */
 	private void copyFolder(File src, File dest) throws IOException {
 		if (dp.isInterrupted()) {
 			return;
 		}
 		
 		if (src.isDirectory()) {
+			// If this is a folder, copy recursively.
 			if (!dest.exists()) {
 				dest.mkdirs();
 			}
@@ -84,6 +92,7 @@ public class CopyTask extends VerifyTask {
 				copyFolder(srcFile, destFile);
 			}
 		} else {
+			// Always override
 			InputStream fis = new FileInputStream(src);
 			OutputStream bos = new BufferedOutputStream(new FileOutputStream(dest), 40960);
 
